@@ -1,139 +1,123 @@
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.io.FileInputStream;
 
-public class HomeScreen extends JFrame {
-    private static final Color ORANGE = new Color(230, 81, 0);
-    private static final Color DARK = new Color(28, 35, 43);
+public class HomeScreen extends Application {
+    private static final String ORANGE = "#E65100";
+    private static final String DARK = "#1C232B";
 
-    public HomeScreen() {
-        setTitle("QuickBite");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1000, 650);
-        setLocationRelativeTo(null);
+    @Override
+    public void start(Stage stage) {
+        BorderPane root = new BorderPane();
 
-        BackgroundPanel background = new BackgroundPanel("assets/background.png");
-        background.setLayout(new BorderLayout());
-        setContentPane(background);
+        try {
+            Image image = new Image(new FileInputStream("assets/background.png"));
+            BackgroundImage bgImage = new BackgroundImage(
+                image,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(100, 100, true, true, true, true)
+            );
+            root.setBackground(new Background(bgImage));
+        } catch (Exception e) {
+            root.setStyle("-fx-background-color: #F6F1E8;");
+        }
 
-        background.add(createHeader(), BorderLayout.NORTH);
-        background.add(createCenterPanel(), BorderLayout.CENTER);
-        background.add(createFooter(), BorderLayout.SOUTH);
+        root.setTop(createHeader());
+        root.setCenter(createCenter());
+        root.setBottom(createFooter());
+
+        Scene scene = new Scene(root, 1000, 650);
+        stage.setTitle("QuickBite");
+        stage.setScene(scene);
+        stage.show();
     }
 
-    private JPanel createHeader() {
-        JPanel header = new JPanel(new BorderLayout());
-        header.setBackground(new Color(230, 81, 0, 235));
-        header.setBorder(new EmptyBorder(16, 30, 16, 30));
+    private HBox createHeader() {
+        Label brand = new Label("QuickBite");
+        brand.setTextFill(Color.WHITE);
+        brand.setFont(Font.font("Arial", FontWeight.BOLD, 34));
 
-        JLabel brand = new JLabel("QuickBite");
-        brand.setForeground(Color.WHITE);
-        brand.setFont(new Font("SansSerif", Font.BOLD, 34));
+        Label slogan = new Label("Fresh meals, fast pickup.");
+        slogan.setTextFill(Color.WHITE);
+        slogan.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 
-        JLabel slogan = new JLabel("Fresh meals, fast pickup.");
-        slogan.setForeground(Color.WHITE);
-        slogan.setFont(new Font("SansSerif", Font.BOLD, 18));
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        header.add(brand, BorderLayout.WEST);
-        header.add(slogan, BorderLayout.EAST);
+        HBox header = new HBox(20, brand, spacer, slogan);
+        header.setAlignment(Pos.CENTER_LEFT);
+        header.setPadding(new Insets(18, 30, 18, 30));
+        header.setStyle("-fx-background-color: rgba(230,81,0,0.94);");
         return header;
     }
 
-    private JPanel createCenterPanel() {
-        JPanel wrapper = new JPanel(new GridBagLayout());
-        wrapper.setOpaque(false);
+    private StackPane createCenter() {
+        VBox card = new VBox(16);
+        card.setAlignment(Pos.CENTER);
+        card.setPadding(new Insets(40, 60, 40, 60));
+        card.setMaxWidth(650);
+        card.setStyle("-fx-background-color: rgba(255,255,255,0.90); -fx-background-radius: 18;");
 
-        JPanel card = new JPanel();
-        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-        card.setBackground(new Color(255, 255, 255, 225));
-        card.setBorder(new EmptyBorder(35, 55, 35, 55));
+        Label title = new Label("QuickBite");
+        title.setTextFill(Color.web(DARK));
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 54));
 
-        JLabel title = new JLabel("QuickBite");
-        title.setForeground(DARK);
-        title.setFont(new Font("SansSerif", Font.BOLD, 54));
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        Label subtitle = new Label("Order from local restaurants and pick up your meal.");
+        subtitle.setTextFill(Color.web(DARK));
+        subtitle.setFont(Font.font("Arial", 21));
 
-        JLabel subtitle = new JLabel("Order from local restaurants and pick up your meal.");
-        subtitle.setForeground(DARK);
-        subtitle.setFont(new Font("SansSerif", Font.PLAIN, 21));
-        subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        Button viewRestaurants = new Button("View Restaurants");
+        viewRestaurants.setFont(Font.font("Arial", FontWeight.BOLD, 22));
+        viewRestaurants.setTextFill(Color.WHITE);
+        viewRestaurants.setStyle("-fx-background-color: " + ORANGE + "; -fx-background-radius: 10; -fx-padding: 14 30;");
 
-        JButton viewRestaurants = new JButton("View Restaurants  ->");
-        viewRestaurants.setFont(new Font("SansSerif", Font.BOLD, 23));
-        viewRestaurants.setForeground(Color.WHITE);
-        viewRestaurants.setBackground(ORANGE);
-        viewRestaurants.setFocusPainted(false);
-        viewRestaurants.setBorder(new EmptyBorder(14, 30, 14, 30));
-        viewRestaurants.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        viewRestaurants.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        viewRestaurants.addActionListener(e -> {
+        viewRestaurants.setOnAction(e -> {
             // Show restaurant displays
-            JOptionPane.showMessageDialog(
-                this,
-                "Restaurant display will open here once the feature branches are integrated.",
-                "QuickBite",
-                JOptionPane.INFORMATION_MESSAGE
-            );
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("QuickBite");
+            alert.setHeaderText(null);
+            alert.setContentText("Restaurant display will open here once the feature branches are integrated.");
+            alert.showAndWait();
         });
 
-        card.add(title);
-        card.add(Box.createVerticalStrut(12));
-        card.add(subtitle);
-        card.add(Box.createVerticalStrut(30));
-        card.add(viewRestaurants);
+        card.getChildren().addAll(title, subtitle, viewRestaurants);
 
-        wrapper.add(card);
-        return wrapper;
+        StackPane center = new StackPane(card);
+        center.setPadding(new Insets(50));
+        return center;
     }
 
-    private JPanel createFooter() {
-        JPanel footer = new JPanel(new BorderLayout());
-        footer.setBackground(new Color(28, 35, 43, 235));
-        footer.setBorder(new EmptyBorder(12, 25, 12, 25));
+    private HBox createFooter() {
+        Label left = new Label("QuickBite | Food Ordering App");
+        left.setTextFill(Color.WHITE);
 
-        JLabel left = new JLabel("QuickBite | Food Ordering App");
-        left.setForeground(Color.WHITE);
+        Label right = new Label("COMP 354 - Group 10");
+        right.setTextFill(Color.WHITE);
 
-        JLabel right = new JLabel("COMP 354 - Group 10");
-        right.setForeground(Color.WHITE);
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        footer.add(left, BorderLayout.WEST);
-        footer.add(right, BorderLayout.EAST);
+        HBox footer = new HBox(left, spacer, right);
+        footer.setPadding(new Insets(14, 25, 14, 25));
+        footer.setStyle("-fx-background-color: rgba(28,35,43,0.94);");
         return footer;
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new HomeScreen().setVisible(true));
-    }
-
-    static class BackgroundPanel extends JPanel {
-        private final Image backgroundImage;
-
-        BackgroundPanel(String imagePath) {
-            backgroundImage = new ImageIcon(imagePath).getImage();
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-
-            int panelW = getWidth();
-            int panelH = getHeight();
-            int imgW = backgroundImage.getWidth(this);
-            int imgH = backgroundImage.getHeight(this);
-
-            if (imgW <= 0 || imgH <= 0) return;
-
-            double scale = Math.max((double) panelW / imgW, (double) panelH / imgH);
-            int drawW = (int) (imgW * scale);
-            int drawH = (int) (imgH * scale);
-
-            int x = (panelW - drawW) / 2;
-            int y = (panelH - drawH) / 2;
-
-            g.drawImage(backgroundImage, x, y, drawW, drawH, this);
-        }
+        launch(args);
     }
 }
