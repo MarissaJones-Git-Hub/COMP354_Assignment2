@@ -51,7 +51,7 @@ public class HomeScreen extends Application {
         brand.setTextFill(Color.WHITE);
         brand.setFont(Font.font("Arial", FontWeight.BOLD, 34));
 
-        Label slogan = new Label("Fresh meals, fast pickup.");
+        Label slogan = new Label("Fresh meals, Fast pickup");
         slogan.setTextFill(Color.WHITE);
         slogan.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 
@@ -76,7 +76,7 @@ public class HomeScreen extends Application {
         title.setTextFill(Color.web(DARK));
         title.setFont(Font.font("Arial", FontWeight.BOLD, 54));
 
-        Label subtitle = new Label("Order from local restaurants and pick up your meal.");
+        Label subtitle = new Label("Come order from local restaurants to pick up your meals!");
         subtitle.setTextFill(Color.web(DARK));
         subtitle.setFont(Font.font("Arial", 21));
 
@@ -102,10 +102,10 @@ public class HomeScreen extends Application {
     }
 
     private HBox createFooter() {
-        Label left = new Label("QuickBite | Food Ordering App");
+        Label left = new Label("QuickBite Food Ordering App");
         left.setTextFill(Color.WHITE);
 
-        Label right = new Label("COMP 354 - Group 10");
+        Label right = new Label("Troy Williams, Marissa Jones, Tioluwani Adesina, Tina Joudi (COMP 354)");
         right.setTextFill(Color.WHITE);
 
         Region spacer = new Region();
