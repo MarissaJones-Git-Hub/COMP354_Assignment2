@@ -1,3 +1,5 @@
+package src;
+
 import java.util.*;
 
 /**
@@ -37,6 +39,45 @@ public class Restaurant {
             }
         }
         return null;
+    }
+
+    public List<Item> selectItem(Scanner scanner)
+    {
+        List<Item> itemsOrdered = new ArrayList<>();
+        System.out.println("\n" + printMenu() + "\n");
+        while (true) {
+            System.out.print("Enter your choice (0 to Quit): ");
+
+            if (!scanner.hasNextLine()) {
+                return null;
+            }
+
+            String choice = scanner.nextLine().trim();
+
+            int choiceNum;
+
+            try {
+                choiceNum = Integer.parseInt(choice);
+            }
+            catch (NumberFormatException e) {
+                choiceNum = -1;
+            }
+
+            if (choiceNum == 0) {
+                return itemsOrdered;
+            }
+
+            boolean addedItem = false;
+
+            if (choiceNum > 0 && choiceNum <= menu.size()) {
+                itemsOrdered.add(menu.get(choiceNum - 1));
+                addedItem = true;
+            }
+
+            if (!addedItem) {
+                System.out.println("Invalid choice. Please try again.");
+            }
+        }
     }
 
     public List<Item> getMenu() {
