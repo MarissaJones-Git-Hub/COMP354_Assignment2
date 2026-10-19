@@ -4,53 +4,42 @@ public class HomeScreen {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
         boolean running = true;
 
         while (running) {
-            displayHomeScreen();
+            showHomeScreen();
 
-            System.out.print("Enter your choice: ");
+            System.out.print("Choose an option: ");
             String choice = scanner.nextLine();
 
-            switch (choice) {
-                case "1":
-                    showRestaurantDisplay();
-                    break;
-
-                case "0":
-                    System.out.println("\nThank you for using QuickBite!");
-                    running = false;
-                    break;
-
-                default:
-                    System.out.println("\nInvalid option. Please try again.\n");
+            if (choice.equals("1")) {
+                showRestaurantDisplay();
+            } else if (choice.equals("0")) {
+                System.out.println("Thanks for using QuickBite.");
+                running = false;
+            } else {
+                System.out.println("Please enter 1 or 0.");
             }
+
+            System.out.println();
         }
 
         scanner.close();
     }
 
-    private static void displayHomeScreen() {
-        System.out.println("==========================================");
-        System.out.println("                 QUICKBITE                ");
-        System.out.println("==========================================");
-        System.out.println("        Fresh meals, fast pickup.");
+    private static void showHomeScreen() {
         System.out.println();
-        System.out.println("Order from local restaurants and");
-        System.out.println("pick up your meal.");
+        System.out.println("Welcome to QuickBite!!!");
+        System.out.println("Fresh meals, fast pickup!");
         System.out.println();
         System.out.println("1. View Restaurants");
         System.out.println("0. Exit");
-        System.out.println("==========================================");
+        System.out.println();
     }
 
     private static void showRestaurantDisplay() {
-        System.out.println("\n==========================================");
-        System.out.println("            RESTAURANT DISPLAY            ");
-        System.out.println("==========================================");
-        System.out.println("Restaurant display will be connected");
-        System.out.println("during feature integration.");
-        System.out.println("==========================================\n");
+        System.out.println();
+        System.out.println("Restaurant Display");
+        System.out.println("The restaurant list will be connected during integration.");
     }
 }
